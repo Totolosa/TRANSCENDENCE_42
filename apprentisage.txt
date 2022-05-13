@@ -1,0 +1,11 @@
+Typescript:
+https://www.freecodecamp.org/news/learn-typescript-in-5-minutes-13eda868daeb/
+https://vuejs.org/guide/typescript/overview.html#overview
+https://michael-verschoof.medium.com/creating-a-vue-3-and-typescript-project-using-the-vue-cli-d492a88cfe81
+
+VueJS:
+https://michaelnthiessen.com/vue-props-vs-data/
+
+ThreeJS:
+https://threejs.org/docs/#manual/en/introduction/Creating-a-scene
+https://www.devmachine.fr/three.js/vue.js/2021/01/25/three-with-vue.html#scene
