@@ -9,3 +9,4 @@ https://michaelnthiessen.com/vue-props-vs-data/
 ThreeJS:
 https://threejs.org/docs/#manual/en/introduction/Creating-a-scene
 https://www.devmachine.fr/three.js/vue.js/2021/01/25/three-with-vue.html#scene
+https://discoverthreejs.com/book/first-steps/first-scene/
