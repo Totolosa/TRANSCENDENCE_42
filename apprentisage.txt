@@ -10,3 +10,14 @@ ThreeJS:
 https://threejs.org/docs/#manual/en/introduction/Creating-a-scene
 https://www.devmachine.fr/three.js/vue.js/2021/01/25/three-with-vue.html#scene
 https://discoverthreejs.com/book/first-steps/first-scene/
+
+Blender:
+creation rectangle et maj origin objet : https://www.youtube.com/watch?v=MmG4GSogOEU&ab_channel=ChipperVideos
+extrude outils : https://www.youtube.com/watch?v=2qD_tcPMhOs&ab_channel=Blender
+trou : https://www.youtube.com/watch?v=nnspVLPCqpM&ab_channel=Alex
+		https://www.youtube.com/watch?v=kUwra0cM4To&ab_channel=TheCGEssentials
+
+
+
+
+

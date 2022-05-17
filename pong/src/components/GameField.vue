@@ -23,14 +23,7 @@ let cube_dim: {
 
 
 function init() {
-	// document!.getElementById('#scene-container')!.style.width = "300px";
 	container = ref(document.querySelector('#scene-container'));
-
-	// container.value!.firstChild!.style.height = '200px';
-	// container.value!.style.weight = 200;
-	// container.value!.style.height = 100;
-	// container.value!.wei = 200;
-	// console.log(container.value!.style.height);
 	console.log('clientWidth = ', container.value!.clientWidth);
 	console.log('clientHeight = ', container.value!.clientHeight);
 
@@ -52,6 +45,11 @@ function init() {
 	const cube = new THREE.Mesh(geometry, material);
 
 	scene.add(cube);
+
+	const geometry2 = new THREE.BoxGeometry( 3, 3, 3 );
+	const edges = new THREE.EdgesGeometry( geometry2 );
+	const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 10 } ) );
+	scene.add( line );
 
 	const renderer = new THREE.WebGLRenderer();
 	renderer.setSize(container.value!.clientWidth, container.value!.clientHeight);
