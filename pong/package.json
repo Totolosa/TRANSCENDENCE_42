@@ -22,7 +22,9 @@
     "@vue/eslint-config-typescript": "^9.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "process": "^0.11.10",
     "three": "^0.140.2",
+    "three-csg-ts": "^3.1.10",
     "typescript": "~4.5.5"
   }
 }
