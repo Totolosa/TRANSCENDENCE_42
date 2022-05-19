@@ -1,6 +1,6 @@
-import { defineNuxtConfig } from 'nuxt'
-
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
-export default defineNuxtConfig({
-
-})
+import { resolve } from 'path'
+export default {
+  alias: {
+    'color2': '#fff'
+  }
+}

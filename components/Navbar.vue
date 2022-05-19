@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import "@/colors.ts"
+// import "@/colors.ts"
 
 </script>
 
