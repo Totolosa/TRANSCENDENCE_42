@@ -1,12 +1,13 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <!-- <HelloWorld msg="COUCOU TWA"/> -->
   <GameField/>
   
 </template>
 
 <script lang="ts" setup>
 import GameField from './components/GameField.vue';
+
+console.log('debut app');
 
 </script>
 

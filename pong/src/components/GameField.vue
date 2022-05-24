@@ -1,50 +1,39 @@
 <template>
 	<div id="scene-container">
-		<PlayerBar :scene="scene" :camera="camera" :renderer="renderer" id="pbar1"></PlayerBar>
-		<PlayerBar :scene="scene" :camera="camera" :renderer="renderer" id="pbar2"></PlayerBar>
+		<!-- <PlayerBar :scene="scene" :camera="camera" :renderer="renderer" id="pbar1"></PlayerBar>
+		<PlayerBar :scene="scene" :camera="camera" :renderer="renderer" id="pbar2"></PlayerBar> -->
 	</div>
-	<!-- <img src="@/assets/logo.png"> -->
 </template>
 
 <script lang="ts" setup>
-import PlayerBar from './PlayerBar.vue';
+// import PlayerBar from './PlayerBar.vue';
+import FieldBorders from '@/game/FieldBorders' 
+import FieldPlane from '@/game/FieldPlane' 
+import PlayerBar from '@/game/PlayerBar' 
 import { onMounted, ref, Ref } from 'vue';
 import * as THREE from 'three';
 import { CSG } from 'three-csg-ts';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import PlayerBarVue from './PlayerBar.vue';
 
 // let loader:  GLTFLoader;
 
-let container = ref(document.querySelector('#scene-container'));
+let height = 10;
+let width = 15;
+let border = 0.1;
 
 let scene = new THREE.Scene();
-scene.background = new THREE.Color('white');
+scene.background = new THREE.Color('green');
 
-const fov = 35; // AKA Field of View
-// const aspect = container.value!.clientWidth / container.value!.clientHeight;
-const aspect = 1.5;
-console.log(aspect);
-const near = 0.1; // the near clipping plane
-const far = 100; // the far clipping plane
-let camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+let camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2);
+camera.position.set(0, 0, 20);
 
 let renderer = new THREE.WebGLRenderer();
-// renderer.setSize(container.value!.clientWidth, container.value!.clientHeight);
-renderer.setSize(500, 300);
-renderer.setPixelRatio(window.devicePixelRatio);
 
-
-
-let cube_dim: {
-	l: number;
-	w: number;
-	h: number;
-} = { 
-	l: 2,
-	w : 2,
-	h : 2,
-};
-
+// function mooveBar(dir: string) {
+// 	if (dir == 'up')
+// 		bar1.val
+// }
 
 function init() {
 	// ADD EDGES LINES
@@ -62,29 +51,25 @@ function init() {
 	// }, undefined, function ( error ) {
 		// 	console.error( error );
 	// } );
+	let container = document.querySelector('#scene-container');
+
+	let field = new FieldBorders(width, height, border, 0x16638D);
+	let plane = new FieldPlane(width, height, 0xE5F4FB);
+	let bar1 = new PlayerBar(1, width, border, 0x000000);
+	let bar2 = new PlayerBar(2, width, border, 0x000000);
+
+	scene.add( plane.mesh, field.mesh, bar1.mesh, bar2.mesh );
 
 
-	const geometry = new THREE.BoxGeometry(10, 7, 0.01);
-	const material = new THREE.MeshBasicMaterial({ color: 0x16638D });
-	const cube = new THREE.Mesh(geometry, material);
-	const geometry2 = new THREE.BoxGeometry(9.9, 6.9, 2);
-	const material2 = new THREE.MeshBasicMaterial({ color: 0x16638D });
-	const cube2 = new THREE.Mesh(geometry2, material2);
-
-	let field = CSG.subtract(cube, cube2);
-	const edges = new THREE.EdgesGeometry( field.geometry );
-	const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0x000000 } ) );
-	// field.material.color.setHex(0x16638D);
-
-	const geometry3 = new THREE.PlaneGeometry( 10, 7 );
-	const material3 = new THREE.MeshBasicMaterial( {color: 0xE5F4FB, side: THREE.DoubleSide} );
-	const plane = new THREE.Mesh( geometry3, material3 );
-	scene.add( plane );
-	scene.add(field);
-
-
-	container.value!.append(renderer.domElement);
+	renderer.setSize(container!.clientWidth, container!.clientHeight);
+	renderer.setPixelRatio(window.devicePixelRatio);
+	container!.append(renderer.domElement);
 	renderer.render(scene, camera);
+
+	// container!.addEventListener('keydown', function(e) {
+	// 	if (e.code == 'ArrowDown' || e.code == 'ArrowUp')
+	// 		mooveBar(e.code);
+	// })
 }
 
 onMounted( () => {
@@ -97,7 +82,9 @@ onMounted( () => {
 
 <style scoped>
 	#scene-container {
-		height: 300px;
+		margin:auto;
+		height: 400px;
+		width: 600px;
 	}
 </style>
 
