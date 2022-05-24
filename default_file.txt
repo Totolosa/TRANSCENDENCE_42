@@ -1,0 +1,14 @@
+<template>
+	<div>
+
+	</div>
+</template>
+
+<script setup>
+import colors from '@/colors.js'
+
+</script>
+
+<style>
+
+</style>
