@@ -7,9 +7,7 @@
 
 <script setup lang="ts">
 import {ref} from "vue"
-import "@/colors.ts"
 import Pages from './pages/index.vue';
-import Navbar from './components/Navbar.vue';
 
 </script>
 
@@ -24,6 +22,9 @@ import Navbar from './components/Navbar.vue';
 html {
   margin: -2px 0 0 0;
 }
+h1, h2, h3, h4 {
+  font-family: 'Orbitron', sans-serif;
+}
 a { text-decoration: none; }
 button { background-color: transparent; }
 .center {
@@ -33,5 +34,29 @@ button { background-color: transparent; }
 }
 .stack {
   position: relative;
+}
+.material-icons.md-18 {
+  font-size: 18px;
+}
+.material-icons.md-24 {
+  font-size: 24px;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+}
+.material-icons.md-48 {
+  font-size: 48px;
+}
+.material-icons-outlined.md-18 {
+  font-size: 18px;
+}
+.material-icons-outlined.md-24 {
+  font-size: 24px;
+}
+.material-icons-outlined.md-36 {
+  font-size: 36px;
+}
+.material-icons-outlined.md-48 {
+  font-size: 48px;
 }
 </style>
