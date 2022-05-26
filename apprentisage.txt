@@ -18,6 +18,6 @@ trou : https://www.youtube.com/watch?v=nnspVLPCqpM&ab_channel=Alex
 		https://www.youtube.com/watch?v=kUwra0cM4To&ab_channel=TheCGEssentials
 
 
-
-
+Jeu:
+requestAnimationFrame: https://www.toutjavascript.com/reference/ref-window.requestanimationframe.php
 

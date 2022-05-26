@@ -15,8 +15,8 @@ export default class PlayerBar {
 		this.material = new THREE.MeshBasicMaterial({ color: color });
 		this.mesh = new THREE.Mesh(this.geometry, this.material);
 		if (nPlayer == 1) 
-			this.mesh.position.x = - width / 2 + 2 * border;
+			this.mesh.position.x = - width / 2 + 3 * border;
 		else
-			this.mesh.position.x = width / 2 - 2 * border;
+			this.mesh.position.x = width / 2 - 3 * border;
 	}
 }
