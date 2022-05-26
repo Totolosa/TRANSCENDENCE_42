@@ -34,7 +34,6 @@ h1 {
 }
 h2 {
 	font-family: 'Orbitron', sans-serif;
-	font-size: 1.3rem;
 }
 h3 {
 	font-family: 'Orbitron', sans-serif;
