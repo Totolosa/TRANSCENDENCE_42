@@ -1,0 +1,12 @@
+<template>
+	<div>
+		<h1>PONG.IO</h1>
+		<router-link to="/home">Login</router-link>
+	</div>
+</template>
+
+<script setup>
+import colors from "@/utils/define.js";
+</script>
+
+<style></style>

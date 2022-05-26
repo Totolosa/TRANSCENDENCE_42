@@ -4,8 +4,8 @@
 	</div>
 </template>
 
-<script setup>
-import colors from '@/colors.js'
+<script setup lang="ts">
+import colors from '@/utils/define.js'
 
 </script>
 

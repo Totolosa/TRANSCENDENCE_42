@@ -1,27 +1,26 @@
 <template>
-	<NavbarItem />
-	<router-view />
+	<div>
+		<router-view />
+	</div>
 </template>
 
 <script setup>
-import colors from '@/colors.js'
-import NavbarItem from './components/NavbarItem.vue';
-
+import colors from "@/utils/define.js";
 </script>
 
 <style>
 * {
-  border: 0;
-  font-size: 100%;
-  font-family: inherit;
-  text-decoration: none;
+	border: 0;
+	font-size: 100%;
+	font-family: inherit;
+	text-decoration: none;
 }
 *,
 ::before,
 ::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -30,31 +29,37 @@ import NavbarItem from './components/NavbarItem.vue';
 	text-align: center;
 	color: #2c3e50;
 }
-a { color: black; }
+h1 {
+	font-family: 'Orbitron', sans-serif;
+}
+h2 {
+	font-family: 'Orbitron', sans-serif;
+	font-size: 1.3rem;
+}
+h3 {
+	font-family: 'Orbitron', sans-serif;
+}
+a {
+	color: black;
+}
 .column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	flex-direction: column;
 }
 .row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+	flex-direction: row;
 }
 .center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 }
 .stack {
-  position: relative;
+	position: relative;
 }
 </style>
