@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 
 export default class Ball {
+	speedX = 0;
+	speedY= 0;
 	color: number;
 	geometry: THREE.SphereGeometry;
 	material: THREE.MeshBasicMaterial;
