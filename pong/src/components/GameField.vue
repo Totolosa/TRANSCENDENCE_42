@@ -1,5 +1,7 @@
 <template>
 	<div id="scene-container">
+		<div>{{Player1.points}}</div>
+		<div>{{Player2.points}}</div>
 		<!-- <PlayerBar :scene="scene" :camera="camera" :renderer="renderer" id="pbar1"></PlayerBar>
 		<PlayerBar :scene="scene" :camera="camera" :renderer="renderer" id="pbar2"></PlayerBar> -->
 	</div>
@@ -11,7 +13,7 @@ import FieldBorders from '@/game/FieldBorders'
 import FieldPlane from '@/game/FieldPlane' 
 import PlayerBar from '@/game/PlayerBar' 
 import Ball from '@/game/Ball' 
-import { onMounted, ref, Ref } from 'vue';
+import { onMounted, reactive, ref, Ref } from 'vue';
 import * as THREE from 'three';
 import { CSG } from 'three-csg-ts';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -33,10 +35,14 @@ let plane: FieldPlane;
 let bar1: PlayerBar;
 let bar2: PlayerBar;
 let ball: Ball;
+const Player1 = ref({ points: 0 });
+const Player2 = ref({ points: 0 });
 
 let barSpeed = 0.02;
-let upBarBool = 0;
-let downBarBool = 0;
+let upBar1Bool = 0;
+let downBar1Bool = 0;
+let upBar2Bool = 0;
+let downBar2Bool = 0;
 let YBarBorder: number;
 
 let XBallBorder: number;
@@ -54,34 +60,24 @@ camera.position.set(0, 0, 20);
 let renderer = new THREE.WebGLRenderer();
 
 function keyDown(dir: string) {
-	let vitesse = 0.4; 
-	if (dir == 'ArrowUp') {
-		// console.log('up');
-		upBarBool = 1;
-		// console.log('bar1.mesh.position.y = ', bar1.mesh.position.y);
-		// bar1.mesh.position.y += vitesse;
-	}
-	else {
-		// console.log('down');
-		downBarBool = -1;
-		// console.log('bar1.mesh.position.y = ', bar1.mesh.position.y);
-		// bar1.mesh.position.y -= vitesse;
-	}
+	if (dir == 'ArrowUp')
+		upBar1Bool = 1;
+	else if (dir == 'ArrowDown')
+		downBar1Bool = -1;
+	else if (dir == 'KeyT')
+		upBar2Bool = 1;
+	else
+		downBar2Bool = -1;
 }
 function keyUp(dir: string) {
-	let vitesse = 0.4; 
-	if (dir == 'ArrowUp') {
-		// console.log('up');
-		upBarBool = 0;
-		// console.log('bar1.mesh.position.y = ', bar1.mesh.position.y);
-		// bar1.mesh.position.y += vitesse;
-	}
-	else {
-		// console.log('down');
-		downBarBool = 0;
-		// console.log('bar1.mesh.position.y = ', bar1.mesh.position.y);
-		// bar1.mesh.position.y -= vitesse;
-	}
+	if (dir == 'ArrowUp')
+		upBar1Bool = 0;
+	else if (dir == 'ArrowDown')
+		downBar1Bool = 0;
+	else if (dir == 'KeyT')
+		upBar2Bool = 0;
+	else
+		downBar2Bool = 0;
 }
 
 
@@ -122,20 +118,19 @@ function init() {
 	document.addEventListener('keydown', function(event){
 		const e = event as KeyboardEvent;
 		// console.log('e.code = ', e.code);
-		if (e.code == 'ArrowDown' || e.code == 'ArrowUp')
+		if (e.code == 'ArrowDown' || e.code == 'ArrowUp' || e.code == 'KeyT' || e.code == 'KeyG')
 			keyDown(e.code);
 	})
 	document.addEventListener('keyup', function(event){
 		const e = event as KeyboardEvent;
 		// console.log('e.code = ', e.code);
-		if (e.code == 'ArrowDown' || e.code == 'ArrowUp')
+		if (e.code == 'ArrowDown' || e.code == 'ArrowUp' || e.code == 'KeyT' || e.code == 'KeyG')
 			keyUp(e.code);
 	})
 	YBarBorder = (height / 2) - border - (bar1.geometry.parameters.height / 2);
 	XBallBorder = bar2.mesh.position.x - bar2.geometry.parameters.width / 2 - ball.geometry.parameters.radius;
 	YBallBorder = height / 2 - border - ball.geometry.parameters.radius;
 	contactBarLimit = bar1.geometry.parameters.height / 2 + ball.geometry.parameters.radius;
-	console.log(YBarBorder);
 	microtime1 = performance.now();
 }
 
@@ -144,8 +139,8 @@ onMounted( () => {
 	animate();
 })
 
-function mooveBar (elapsed: number ) {
-	let newPos = bar1.mesh.position.y + (upBarBool + downBarBool) * elapsed * barSpeed;
+function mooveBar1 (elapsed: number ) {
+	let newPos = bar1.mesh.position.y + (upBar1Bool + downBar1Bool) * elapsed * barSpeed;
 	if (newPos < YBarBorder && newPos > -YBarBorder )
 		bar1.mesh.position.y = newPos;
 	else if (newPos >= YBarBorder)
@@ -154,49 +149,83 @@ function mooveBar (elapsed: number ) {
 		bar1.mesh.position.y = - YBarBorder;
 }
 
-function contactBallBar (newPos: BallPos) : boolean {
-	if (newPos.y > bar1.mesh.position.y - contactBarLimit &&
-			newPos.y < bar1.mesh.position.y + contactBarLimit)
-		return true;
-	else 
-		return false;
+function mooveBar2 (elapsed: number ) {
+	let newPos = bar2.mesh.position.y + (upBar2Bool + downBar2Bool) * elapsed * barSpeed;
+	if (newPos < YBarBorder && newPos > -YBarBorder )
+		bar2.mesh.position.y = newPos;
+	else if (newPos >= YBarBorder)
+		bar2.mesh.position.y = YBarBorder;
+	else
+		bar2.mesh.position.y = - YBarBorder;
 }
 
-function contactBallBorder (newPos: BallPos) : boolean {
-	if (newPos.y > YBallBorder || newPos.y < -YBallBorder) {
-		// console.log('contactY');
-		return true;
+function contactBallBar (newPos: BallPos) {
+	if (newPos.x >= XBallBorder){
+		ball.mesh.position.x = XBallBorder;
+		updateBallSpeed(bar2);
 	}
-	else 
-		return false;
+	else {
+		ball.mesh.position.x = -XBallBorder;
+		updateBallSpeed(bar1);
+	}
 }
 
-// function updateBallSpeed (newPos: BallPos) {
+function contactBallBorder (newPos: BallPos) {
+	if (newPos.y >= YBallBorder)
+		ball.mesh.position.y = YBallBorder;
+	else
+		ball.mesh.position.y = -YBallBorder;
+	ball.speedY *= -1;
+}
 
-// }
+function updateBallSpeed (bar : PlayerBar) {
+	ball.speedY = ((ball.mesh.position.y - bar.mesh.position.y) / contactBarLimit) * 0.01;
+	if (ball.speedX < 0)
+		ball.speedX -= 0.0005;
+	else
+		ball.speedX += 0.0005;
+	ball.speedX *= -1;
+
+	// console.log(angle);
+	// console.log('contactBarLimit = ', contactBarLimit);
+}
 
 function mooveBall (elapsed: number) {
-	// let newPos = ball.mesh.position.x + (dirBallBool) * elapsed * ballSpeed;
 	let newPos: BallPos = { x: ball.mesh.position.x + elapsed * ball.speedX, y: ball.mesh.position.y + elapsed * ball.speedY };
-	let contactBar = contactBallBar(newPos);
-	let contactBorder = contactBallBorder(newPos);
-	if ((newPos.x < XBallBorder && newPos.x > -XBallBorder) && (newPos.y < YBallBorder && newPos.y > -YBallBorder)) {
+
+	if ((ball.speedX > 0 && newPos.x > XBallBorder &&
+		newPos.y > bar2.mesh.position.y - contactBarLimit &&
+		newPos.y < bar2.mesh.position.y + contactBarLimit) ||
+		(ball.speedX < 0 && newPos.x < -XBallBorder &&
+		newPos.y > bar1.mesh.position.y - contactBarLimit &&
+		newPos.y < bar1.mesh.position.y + contactBarLimit) )
+		contactBallBar(newPos);
+	// if (newPos.y > bar1.mesh.position.y - contactBarLimit &&
+	// 	newPos.y < bar1.mesh.position.y + contactBarLimit)
+	// 	contactBallBar(newPos);
+	else if (newPos.y > YBallBorder || newPos.y < -YBallBorder)
+		contactBallBorder(newPos);
+	// else if ((newPos.x < XBallBorder && newPos.x > -XBallBorder) && (newPos.y < YBallBorder && newPos.y > -YBallBorder)) {
+	else {
 		ball.mesh.position.x = newPos.x;
 		ball.mesh.position.y = newPos.y;
 	}
-	else if (contactBar) {
-		let coeff = (XBallBorder - ball.mesh.position.x) / (newPos.x - ball.mesh.position.x);
-		ball.mesh.position.y += coeff * (newPos.y - ball.mesh.position.y);
-		if (newPos.x >= XBallBorder) {
-			ball.mesh.position.x = XBallBorder;
-		}
-
-		else
-			ball.mesh.position.x = -XBallBorder;
-		ball.speedX *= -1;
+	if ( ball.mesh.position.x > width / 2 + ball.geometry.parameters.radius) {
+		Player2.value.points++;
+		ball.mesh.position.x = 0;
+		ball.mesh.position.y = 0;
+		ball.speedX = -0.005;
+		ball.speedY = -0.001;
+		console.log('POINT Player 2!')
 	}
-	else {
-		// METTRE A JOUR POINTS
+
+	else if (ball.mesh.position.x < -width / 2 - ball.geometry.parameters.radius) {
+		Player1.value.points++;
+			ball.mesh.position.x = 0;
+		ball.mesh.position.y = 0;
+		ball.speedX = -0.005;
+		ball.speedY = -0.001;
+		console.log('POINT Player 1!')
 	}
 
 	// if (contact)
@@ -217,7 +246,8 @@ function mooveBall (elapsed: number) {
 function animate() {
 	microtime2 = performance.now();
 	let elapsed = microtime2 - microtime1;
-	mooveBar(elapsed);
+	mooveBar1(elapsed);
+	mooveBar2(elapsed);
 	mooveBall(elapsed);
 
 	// console.log('barY = ', bar1.mesh.position.y);

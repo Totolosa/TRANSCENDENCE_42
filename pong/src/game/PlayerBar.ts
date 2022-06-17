@@ -11,7 +11,7 @@ export default class PlayerBar {
 	constructor(nPlayer: number, width: number, border: number, color: number) {
 		this.player = nPlayer;
 		this.color = color;
-		this.geometry = new THREE.BoxGeometry(2 * border, 1, 0.01);
+		this.geometry = new THREE.BoxGeometry(2 * border, 2, 0.5);
 		this.material = new THREE.MeshBasicMaterial({ color: color });
 		this.mesh = new THREE.Mesh(this.geometry, this.material);
 		if (nPlayer == 1) 
